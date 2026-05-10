@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClipLink</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <p class="eyebrow">Lab 13 Demo</p>
+        <h1>ClipLink</h1>
+        <p class="lede">Create short links, set expirations, and track clicks with a tiny local app.</p>
+      </section>
+
+      <section class="panel">
+        <h2>Create Link</h2>
+        <form id="create-form">
+          <label>
+            Target URL
+            <input id="target-url" name="target_url" placeholder="https://example.com/very/long/url" required />
+          </label>
+          <label>
+            Expiration (optional)
+            <input id="expires-at" name="expires_at" type="datetime-local" />
+          </label>
+          <button type="submit">Create</button>
+        </form>
+        <p id="message" class="message"></p>
+      </section>
+
+      <section class="panel">
+        <div class="toolbar">
+          <h2>Links</h2>
+          <select id="status-filter">
+            <option value="all">All</option>
+            <option value="active">Active</option>
+            <option value="expired">Expired</option>
+          </select>
+        </div>
+        <div id="links" class="cards"></div>
+      </section>
+    </main>
+    <script src="/app.js"></script>
+  </body>
+</html>

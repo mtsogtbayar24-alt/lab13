@@ -1,0 +1,152 @@
+:root {
+  --bg: #f3efe6;
+  --paper: #fffaf2;
+  --ink: #1e1a16;
+  --muted: #6a5f53;
+  --line: #d8c8b2;
+  --accent: #a14524;
+  --accent-2: #204c3a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  background:
+    radial-gradient(circle at top left, rgba(161, 69, 36, 0.12), transparent 24rem),
+    radial-gradient(circle at bottom right, rgba(32, 76, 58, 0.14), transparent 20rem),
+    var(--bg);
+  color: var(--ink);
+}
+
+.shell {
+  width: min(960px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0 4rem;
+}
+
+.hero {
+  padding: 2rem 0 1rem;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  font-size: 0.8rem;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2.6rem, 6vw, 4.8rem);
+}
+
+.lede {
+  max-width: 42rem;
+  color: var(--muted);
+  font-size: 1.1rem;
+}
+
+.panel {
+  margin-top: 1.5rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 1.25rem;
+  box-shadow: 0 10px 30px rgba(30, 26, 22, 0.08);
+}
+
+form {
+  display: grid;
+  gap: 1rem;
+}
+
+label {
+  display: grid;
+  gap: 0.4rem;
+  font-weight: 600;
+}
+
+input,
+select,
+button {
+  font: inherit;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: white;
+}
+
+button {
+  justify-self: start;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.8rem 1.2rem;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.cards {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.card {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1rem;
+  background: white;
+}
+
+.meta {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.ghost {
+  background: var(--accent-2);
+}
+
+.danger {
+  background: #8a2b2b;
+}
+
+.message {
+  min-height: 1.2rem;
+  color: var(--accent-2);
+}
+
+@media (max-width: 640px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  button {
+    width: 100%;
+    justify-self: stretch;
+  }
+}
