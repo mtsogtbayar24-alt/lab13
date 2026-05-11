@@ -108,6 +108,68 @@ class ShortLinkServiceTests(unittest.TestCase):
         item = self.service.get_link(link.code)
         self.assertFalse(item["expired"])
 
+    # --- expiration edge cases ---
+
+    def test_create_link_rejects_non_iso_expiration(self) -> None:
+        with self.assertRaises(ValidationError):
+            self.service.create_link("https://example.com", "not-a-date")
+
+    def test_create_link_naive_datetime_treated_as_utc(self) -> None:
+        expires_at = (utc_now() + timedelta(hours=1)).replace(tzinfo=None).isoformat()
+        link = self.service.create_link("https://example.com", expires_at)
+        self.assertIsNotNone(link.expires_at)
+
+    def test_expired_link_shows_expired_flag_in_list(self) -> None:
+        link = self.service.create_link(
+            "https://example.com", (utc_now() + timedelta(seconds=1)).isoformat()
+        )
+        repo_links = self.service.repository.list_links()
+        for item in repo_links:
+            if item.code == link.code:
+                item.expires_at = (utc_now() - timedelta(seconds=1)).isoformat()
+        self.service.repository.save_links(repo_links)
+        items = self.service.list_links()
+        expired_item = next(i for i in items if i["code"] == link.code)
+        self.assertTrue(expired_item["expired"])
+
+    def test_no_expiration_link_never_expires(self) -> None:
+        link = self.service.create_link("https://example.com")
+        item = self.service.get_link(link.code)
+        self.assertIsNone(item["expires_at"])
+        self.assertFalse(item["expired"])
+
+    # --- click counter edge cases ---
+
+    def test_multiple_resolves_increment_clicks_each_time(self) -> None:
+        link = self.service.create_link("https://example.com")
+        self.service.resolve_link(link.code)
+        self.service.resolve_link(link.code)
+        self.service.resolve_link(link.code)
+        item = self.service.get_link(link.code)
+        self.assertEqual(item["clicks"], 3)
+
+    def test_expired_link_resolve_does_not_increment_clicks(self) -> None:
+        link = self.service.create_link(
+            "https://example.com", (utc_now() + timedelta(seconds=1)).isoformat()
+        )
+        repo_links = self.service.repository.list_links()
+        for item in repo_links:
+            if item.code == link.code:
+                item.expires_at = (utc_now() - timedelta(seconds=1)).isoformat()
+        self.service.repository.save_links(repo_links)
+        with self.assertRaises(ExpiredLinkError):
+            self.service.resolve_link(link.code)
+        item = self.service.get_link(link.code)
+        self.assertEqual(item["clicks"], 0)
+
+    def test_clicks_persist_across_repository_reloads(self) -> None:
+        link = self.service.create_link("https://example.com")
+        self.service.resolve_link(link.code)
+        repo2 = JsonLinkRepository(self.service.repository.file_path)
+        service2 = ShortLinkService(repo2)
+        item = service2.get_link(link.code)
+        self.assertEqual(item["clicks"], 1)
+
 
 if __name__ == "__main__":
     unittest.main()
