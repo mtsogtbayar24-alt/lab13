@@ -35,11 +35,15 @@ Excluded:
 - Analytics beyond click counts
 - Distributed deployment
 
-## Planned Milestones
+## Milestones
 
-1. Define project scope, repository intent, and assignment alignment.
-2. Compare stack options and justify the selected stack.
-3. Draft architecture and repository structure before further build commits.
+1. Define project scope, repository intent, and assignment alignment. ✓
+2. Compare stack options and justify the selected stack. ✓
+3. Draft architecture and repository structure before further build commits. ✓
+4. Implement domain model, repository, and service layer. ✓
+5. Add HTTP endpoints and minimal frontend. ✓
+6. Write unit tests covering service behaviour and edge cases. ✓
+7. Complete AI usage report, self-evaluation, and submission polish. ✓
 
 ## Primary Users
 
